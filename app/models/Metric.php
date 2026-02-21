@@ -17,7 +17,7 @@ class Metric
             GROUP BY target_id
           ) x ON x.target_id = t.id
           JOIN metrics m ON m.target_id = t.id AND m.checked_at = x.last_check
-          WHERE t.user_id = :uid
+          WHERE t.user_id = :uid and t.status = 1
           ORDER BY t.name
         ";
         $stmt = $db->prepare($sql);

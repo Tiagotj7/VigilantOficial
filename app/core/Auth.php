@@ -7,7 +7,7 @@ class Auth
     public static function login(string $email, string $password): bool
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+        $stmt = $db->prepare('SELECT * FROM users WHERE email = :email AND status = 1 LIMIT 1');
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
 
