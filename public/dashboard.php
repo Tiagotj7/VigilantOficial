@@ -14,6 +14,17 @@ $summary = Metric::latestSummary($userId);
     <meta charset="UTF-8">
     <title>Vigilant - Dashboard</title>
     <link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+<link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+
+<!-- PWA / Android -->
+<link rel="manifest" href="assets/img/site.webmanifest">
+<meta name="theme-color" content="#0f172a">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -21,7 +32,7 @@ $summary = Metric::latestSummary($userId);
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="assets/img/logo-vigilant.svg" alt="Vigilant" height="32">
+            <img src="assets/img/LogoVigilant.png" alt="Vigilant" height="50">
             <span class="app-name">Vigilant</span>
         </div>
         <nav class="sidebar-nav">
