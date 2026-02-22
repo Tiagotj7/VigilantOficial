@@ -122,15 +122,15 @@ $displayMail = $_SESSION['user_email'] ?? '';
                         <span class="theme-icon theme-icon-moon">🌙</span>
                     </button>
                     <!-- Bloco do usuário -->
-                    <a href="profile.php" class="user-pill user-pill-link">
-                        <span class="avatar-circle">
-                            <?= strtoupper(mb_substr($displayName, 0, 1, 'UTF-8')); ?>
-                        </span>
-                        <div>
-                            <div class="user-name"><?= htmlspecialchars($displayName); ?></div>
-                            <div class="user-email"><?= htmlspecialchars($displayMail); ?></div>
-                        </div>
-                    </a>
+<a href="profile.php" class="user-pill user-pill-link">
+    <span class="avatar-circle avatar-circle-img">
+        <img src="<?= htmlspecialchars($avatarUrl); ?>" alt="Avatar" class="avatar-img">
+    </span>
+    <div>
+        <div class="user-name"><?= htmlspecialchars($displayName); ?></div>
+        <div class="user-email"><?= htmlspecialchars($displayMail); ?></div>
+    </div>
+</a>
                 </div>
             </header>
 
