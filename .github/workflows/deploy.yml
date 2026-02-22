@@ -3,7 +3,7 @@ name: 🚀 Deploy via FTP
 on:
   push:
     branches:
-      - main   # ou "master", conforme seu branch padrão
+      - main   # ou "master", se for o seu branch padrão
 
 jobs:
   ftp-deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: 🧾 Checkout do código
         uses: actions/checkout@v3
 
-      - name: 🚀 Deploy para FTP
+      - name: 🚀 Deploy para FTP (VigilantOficial)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -23,17 +23,23 @@ jobs:
           protocol: ftp
           port: 21
 
-          local-dir: ./
+          # Pasta local dentro do repositório que será enviada
+          local-dir: ./VigilantOficial/
+
+          # Pasta remota NO SERVIDOR (InfinityFree)
           server-dir: /htdocs/
 
           exclude: |
             **/.git*
-            **/.git*/**
             **/.github/**
             **/node_modules/**
             **/vendor/**
             **/.env
             **/README.md
             **/LICENSE
+            **/database/**
+            **/.vscode/**
+            **/.idea/**
+            **/*.sql
 
           log-level: minimal
