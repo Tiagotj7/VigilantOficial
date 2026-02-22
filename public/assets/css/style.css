@@ -1,3 +1,4 @@
+/* -------style.css   -   Designer Dashboard--------- */
 /* --------- Variáveis de tema --------- */
 :root{
     --bg-body:#f3f4f6;
@@ -45,12 +46,20 @@ html[data-theme="dark"]{
 }
 
 /* --------- Layout base --------- */
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+}
 body{
     background:var(--bg-body);
     color:var(--text-main);
 }
-.layout{display:flex;min-height:100vh}
+.layout{
+    display:flex;
+    min-height:100vh;
+}
 
 /* Sidebar */
 .sidebar{
@@ -75,7 +84,9 @@ html[data-theme="dark"] .sidebar{
     color:var(--text-main);
     font-size:18px;
 }
-.sidebar-nav{flex:1}
+.sidebar-nav{
+    flex:1;
+}
 .nav-section{
     font-size:11px;
     text-transform:uppercase;
@@ -103,7 +114,10 @@ html[data-theme="dark"] .sidebar{
     padding:16px 14px;
     font-size:13px;
 }
-.sidebar-upgrade h4{margin-bottom:6px;font-size:15px}
+.sidebar-upgrade h4{
+    margin-bottom:6px;
+    font-size:15px;
+}
 .btn-primary.full{
     width:100%;
     background:white;
@@ -206,8 +220,21 @@ html[data-theme="dark"] .theme-icon-moon{opacity:1;}
     font-size:14px;
     font-weight:600;
 }
-.user-name{font-size:13px;font-weight:600}
-.user-email{font-size:11px;color:var(--text-sub)}
+.user-name{
+    font-size:13px;
+    font-weight:600;
+}
+.user-email{
+    font-size:11px;
+    color:var(--text-sub);
+}
+.user-pill-link{
+    text-decoration:none;
+    color:inherit;
+}
+.user-pill-link:hover{
+    filter:brightness(0.97);
+}
 
 /* KPI cards */
 .kpi-grid{
@@ -251,7 +278,9 @@ html[data-theme="dark"] .theme-icon-moon{opacity:1;}
     box-shadow:var(--shadow-soft);
     border:1px solid var(--border-soft);
 }
-.card.large{grid-column:span 2}
+.card.large{
+    grid-column:span 2;
+}
 .card-header{
     display:flex;
     justify-content:space-between;
@@ -269,7 +298,8 @@ html[data-theme="dark"] .theme-icon-moon{opacity:1;}
     border-collapse:collapse;
     font-size:13px;
 }
-.table th,.table td{
+.table th,
+.table td{
     padding:6px 8px;
     text-align:left;
 }
@@ -305,10 +335,235 @@ html[data-theme="dark"] canvas{
     background:transparent;
 }
 
-.user-pill-link{
-    text-decoration:none;
-    color:inherit;
+/* HERO do dashboard (website) */
+.hero-bar{
+    margin-bottom:14px;
 }
-.user-pill-link:hover{
-    filter:brightness(0.97);
+.hero-bar h1{
+    font-size:22px;
+    margin-bottom:4px;
+}
+.hero-bar p{
+    font-size:13px;
+    color:var(--text-sub);
+}
+
+/* Estatísticas globais no topo */
+.hero-stats-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+    margin-bottom:14px;
+}
+.hero-stat-card{
+    background:var(--bg-card);
+    border-radius:16px;
+    padding:10px 12px;
+    box-shadow:var(--shadow-soft);
+    border:1px solid var(--border-soft);
+}
+.hero-stat-card p{
+    font-size:12px;
+    color:var(--text-sub);
+    margin-bottom:4px;
+}
+.hero-stat-card h2{
+    font-size:18px;
+    margin-bottom:2px;
+}
+.hero-stat-card span{
+    font-size:11px;
+    color:var(--text-muted);
+}
+
+/* Terminal / Atividade ao vivo */
+.terminal{
+    background:#020617;
+    color:#e5e7eb;
+    border-radius:10px;
+    padding:10px;
+    font-size:11px;
+    line-height:1.4;
+    max-height:200px;
+    overflow:auto;
+    font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.log-ok{
+    color:#22c55e;
+    display:block;
+}
+.log-error{
+    color:#f97316;
+    display:block;
+}
+
+/* Botão secundário outline pequeno */
+.btn-secondary-outline{
+    width:100%;
+    border-radius:999px;
+    border:1px solid var(--border-soft);
+    background:transparent;
+    color:var(--text-main);
+    cursor:pointer;
+}
+
+/* Lista de funcionalidades */
+.feature-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    font-size:13px;
+}
+.feature-list li{
+    margin-bottom:8px;
+}
+.feature-list strong{
+    display:block;
+    font-size:13px;
+}
+.feature-list span{
+    font-size:12px;
+    color:var(--text-sub);
+}
+
+/* Seções específicas (Meus Sites, Relatórios, Atividade) */
+.section-block{
+    margin-top:20px;
+    margin-bottom:18px;
+}
+.section-block-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:4px;
+}
+.section-block-header h2{
+    font-size:18px;
+}
+.section-block-sub{
+    font-size:13px;
+    color:var(--text-sub);
+    margin-bottom:10px;
+}
+
+.btn-primary-sm{
+    padding:7px 14px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:500;
+    background:linear-gradient(135deg,#06b6d4,#3b82f6);
+    color:white;
+}
+.btn-outline-sm{
+    padding:7px 14px;
+    border-radius:999px;
+    border:1px solid var(--border-soft);
+    cursor:pointer;
+    font-size:13px;
+    background:transparent;
+    color:var(--text-main);
+}
+
+/* Grid de cartões de relatórios */
+.reports-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+}
+.report-card{
+    background:var(--bg-card);
+    border-radius:14px;
+    padding:10px 12px;
+    border:1px solid var(--border-soft);
+    font-size:13px;
+}
+.report-card h3{
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+/* Lista de atividade */
+.activity-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    font-size:13px;
+}
+.activity-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    padding:6px 0;
+    border-bottom:1px solid var(--border-soft);
+}
+.activity-list li:last-child{
+    border-bottom:none;
+}
+.activity-list p{
+    margin-bottom:2px;
+}
+.activity-list span{
+    font-size:12px;
+    color:var(--text-sub);
+}
+.activity-badge{
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:999px;
+    font-weight:600;
+    min-width:48px;
+    text-align:center;
+}
+.activity-badge.ok{
+    background:#dcfce7;
+    color:#16a34a;
+}
+.activity-badge.warn{
+    background:#fef3c7;
+    color:#b45309;
+}
+.activity-badge.info{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+/* Documentação */
+.doc-block{
+    margin-bottom:10px;
+}
+.doc-label{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:2px;
+}
+.doc-text{
+    font-size:13px;
+    color:var(--text-sub);
+}
+.doc-code{
+    display:block;
+    background:#020617;
+    color:#e5e7eb;
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.4;
+    white-space:pre;
+    font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.doc-link{
+    color:#2563eb;
+    text-decoration:none;
+}
+.doc-link:hover{
+    text-decoration:underline;
+}
+
+.main-section{
+    /* nada aqui, por enquanto */
+}
+.main-section-hidden{
+    display:none;
 }
