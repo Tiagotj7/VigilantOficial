@@ -55,3 +55,6 @@ CREATE TABLE user_tokens (
 -- Usuário de teste
 INSERT INTO users (name, email, password_hash, status)
 VALUES ('Admin', 'admin@vigilant.local', SHA2('admin123', 256), 1);
+
+ALTER TABLE users
+ADD COLUMN profile_image VARCHAR(255) NULL AFTER status;

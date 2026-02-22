@@ -1,36 +1,33 @@
 // public/assets/js/main.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Foco automático no campo de email do login, se existir
-    const emailInput = document.querySelector('input[name="email"]');
-    if (emailInput && window.location.pathname.includes('login.php')) {
-        emailInput.focus();
+    // ---- Tema claro/escuro ----
+    const rootHtml = document.documentElement; // <html>
+    const THEME_KEY = 'vigilant-theme';
+
+    function applyTheme(theme) {
+        if (theme !== 'dark' && theme !== 'light') {
+            theme = 'light';
+        }
+        rootHtml.setAttribute('data-theme', theme);
+        localStorage.setItem(THEME_KEY, theme);
     }
 
-    // Pequeno helper para menus (no futuro, se você criar mais páginas)
-    const currentPath = window.location.pathname;
-    const navItems = document.querySelectorAll('.sidebar .nav-item');
+    // Tema inicial: usa localStorage ou prefere dark se sistema for dark
+    let storedTheme = localStorage.getItem(THEME_KEY);
+    if (!storedTheme) {
+        const prefersDark = window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+        storedTheme = prefersDark ? 'dark' : 'light';
+    }
+    applyTheme(storedTheme);
 
-    navItems.forEach(item => {
-        const href = item.getAttribute('href');
-        if (!href || href === '#') return;
-        try {
-            const linkPath = new URL(href, window.location.origin).pathname;
-            if (linkPath === currentPath) {
-                item.classList.add('active');
-            }
-        } catch (e) {
-            // Em caso de href relativo estranho, ignora
-        }
-    });
-
-    // Exemplo de listener de pesquisa (apenas console.log por enquanto)
-    const searchInput = document.querySelector('.search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const value = e.target.value.trim();
-            // Aqui você pode no futuro filtrar tabela, alvos, etc.
-            console.log('Pesquisar:', value);
+    const toggleBtn = document.getElementById('themeToggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const current = rootHtml.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            applyTheme(next);
         });
     }
 });

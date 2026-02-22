@@ -9,7 +9,7 @@ $targets = Target::allByUser($userId);
 $summary = Metric::latestSummary($userId);
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>Vigilant - Dashboard</title>
@@ -32,7 +32,7 @@ $summary = Metric::latestSummary($userId);
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <img src="assets/img/LogoVigilant.png" alt="Vigilant" height="50">
+            <img src="assets/img/LogoVigilant.png" alt="Vigilant" height="80">
             <span class="app-name">Vigilant</span>
         </div>
         <nav class="sidebar-nav">
@@ -54,25 +54,39 @@ $summary = Metric::latestSummary($userId);
 
     <!-- Main -->
     <main class="main">
-        <header class="topbar">
-            <div>
-                <h1>Analytics &amp; Reports</h1>
-                <p>Insights em tempo real sobre suas aplicações monitoradas</p>
-            </div>
-            <div class="topbar-right">
-                <input type="search" class="search" placeholder="Pesquisar...">
-                <div class="user-pill">
-                    <span class="avatar-circle">
-                        <?= strtoupper(substr($_SESSION['user_name'] ?? 'A', 0, 1)); ?>
-                    </span>
-                    <div>
-                        <div class="user-name"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin'); ?></div>
-                        <div class="user-email"><?= htmlspecialchars($_SESSION['user_email'] ?? 'admin@vigilant.local'); ?></div>
-                    </div>
-                </div>
-            </div>
-        </header>
+<header class="topbar">
+    <div>
+        <h1>Analytics &amp; Reports</h1>
+        <p>Insights em tempo real sobre suas aplicações monitoradas</p>
+    </div>
+    <div class="topbar-right">
+        <!-- Botão de tema -->
+        <button class="theme-toggle" id="themeToggle" type="button">
+            <span class="theme-icon theme-icon-sun">☀</span>
+            <span class="theme-icon theme-icon-moon">🌙</span>
+        </button>
 
+        <input type="search" class="search" placeholder="Pesquisar...">
+
+        <!-- Bloco do usuário (topo direito) -->
+<a href="profile.php" class="user-pill user-pill-link">
+    <span class="avatar-circle">
+        <?php
+        $displayName = $_SESSION['user_name'] ?? 'Usuário';
+        echo strtoupper(mb_substr($displayName, 0, 1, 'UTF-8'));
+        ?>
+    </span>
+    <div>
+        <div class="user-name">
+            <?= htmlspecialchars($displayName); ?>
+        </div>
+        <div class="user-email">
+            <?= htmlspecialchars($_SESSION['user_email'] ?? ''); ?>
+        </div>
+    </div>
+</a>
+    </div>
+</header>
         <!-- KPIs -->
         <section class="kpi-grid">
             <div class="kpi-card">
@@ -171,8 +185,7 @@ $summary = Metric::latestSummary($userId);
 <script>
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
-<script src="assets/js/charts.js"></script>
 <script src="assets/js/main.js"></script>
-
+<script src="assets/js/charts.js"></script>
 </body>
 </html>

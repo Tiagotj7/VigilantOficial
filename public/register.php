@@ -87,16 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="post" action="register.php">
         <label>Nome</label>
-        <input type="text" name="name" required value="<?= htmlspecialchars($name) ?>">
+        <input type="text" name="name" placeholder="Nome completo" required value="<?= htmlspecialchars($name) ?>">
 
         <label>E-mail</label>
-        <input type="email" name="email" required value="<?= htmlspecialchars($email) ?>">
+        <input type="email" name="email" placeholder="example@gmail.com" required value="<?= htmlspecialchars($email) ?>">
 
         <label>Senha</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" placeholder="********" required>
 
         <label>Confirmar senha</label>
-        <input type="password" name="password_confirmation" required>
+        <input type="password" name="password_confirmation" placeholder="********" required>
 
         <button type="submit" class="btn-primary full">Registrar</button>
     </form>
