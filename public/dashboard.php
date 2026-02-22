@@ -8,6 +8,25 @@ $userId  = Auth::userId();
 $targets = Target::allByUser($userId);
 $summary = Metric::latestSummary($userId);
 
+// buscar dados do usuário (incluindo foto)
+$db = Database::getConnection();
+$stmtUser = $db->prepare('SELECT name, email, profile_image FROM users WHERE id = :id LIMIT 1');
+$stmtUser->execute(['id' => $userId]);
+$user = $stmtUser->fetch();
+
+// fallback se algo der muito errado
+$displayName = $user['name']  ?? ($_SESSION['user_name']  ?? 'Usuário');
+$displayMail = $user['email'] ?? ($_SESSION['user_email'] ?? '');
+
+// montar URL do avatar (foto ou default)
+$avatarUrl = 'assets/img/avatar-default.png';
+if (!empty($user['profile_image'])) {
+    $candidate = 'assets/uploads/profile/' . $user['profile_image'];
+    if (file_exists(__DIR__ . '/' . $candidate)) {
+        $avatarUrl = $candidate;
+    }
+}
+
 // KPIs básicos calculados a partir do resumo
 $uptimeSum = 0;
 $uptimeCount = 0;
