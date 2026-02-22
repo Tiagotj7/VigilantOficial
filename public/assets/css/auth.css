@@ -1,6 +1,13 @@
-/*--- auth.css --- Estilos para as páginas de autenticação (login e registro) --- */
+/*--- auth.css --- Estilos para as páginas de autenticação (login,registro e index) --- */
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+}
+
+/* Fundo hero para index, login e registro */
 body.hero-bg{
     min-height:100vh;
     background:radial-gradient(circle at 0% 0%,#1f2937 0,#020617 40%,#000 100%);
@@ -9,19 +16,26 @@ body.hero-bg{
     align-items:center;
     justify-content:center;
 }
+
+/* HERO (index.php) */
 .hero-container{
     text-align:center;
     max-width:720px;
     padding:40px;
 }
-.hero-logo{margin-bottom:40px;opacity:.9}
+.hero-logo{
+    margin-bottom:40px;
+    opacity:.9;
+}
 .hero-container h1{
     font-size:40px;
     letter-spacing:.06em;
     color:#f9fafb;
     margin-bottom:16px;
 }
-.hero-container h1 span{font-weight:700}
+.hero-container h1 span{
+    font-weight:700;
+}
 .hero-subtitle{
     font-size:16px;
     color:#9ca3af;
@@ -32,7 +46,10 @@ body.hero-bg{
     gap:16px;
     justify-content:center;
 }
-.btn-primary,.btn-secondary{
+
+/* Botões padrão de autenticação/hero */
+.btn-primary,
+.btn-secondary{
     padding:12px 28px;
     border-radius:999px;
     border:none;
@@ -51,6 +68,8 @@ body.hero-bg{
     color:#e5e7eb;
     border:1px solid rgba(148,163,184,.4);
 }
+
+/* Cartão de login/registro */
 .auth-card{
     width:360px;
     background:rgba(15,23,42,.9);
@@ -78,6 +97,8 @@ body.hero-bg{
     color:#e5e7eb;
     margin-bottom:14px;
 }
+
+/* Alertas */
 .alert-error{
     background:rgba(239,68,68,.15);
     color:#fecaca;
@@ -86,16 +107,26 @@ body.hero-bg{
     font-size:13px;
     margin-bottom:12px;
 }
-.btn-primary.full{
-    width:100%;margin-top:8px
+.alert-success{
+    background:rgba(34,197,94,.15);
+    color:#bbf7d0;
+    border-radius:12px;
+    padding:8px 10px;
+    font-size:13px;
+    margin-bottom:12px;
 }
 
+/* Botão full no formulário */
+.btn-primary.full{
+    width:100%;
+    margin-top:8px;
+}
 .btn-primary.full:hover{
     box-shadow:0 20px 40px rgba(37,99,235,.5);
     transform: scale(1.05, 1.05);
-    
 }
 
+/* Link para alternar entre login e registro */
 .auth-switch{
     margin-top:12px;
     font-size:13px;
@@ -109,12 +140,4 @@ body.hero-bg{
 }
 .auth-switch a:hover{
     text-decoration:underline;
-}
-.alert-success{
-    background:rgba(34,197,94,.15);
-    color:#bbf7d0;
-    border-radius:12px;
-    padding:8px 10px;
-    font-size:13px;
-    margin-bottom:12px;
 }
