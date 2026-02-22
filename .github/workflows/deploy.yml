@@ -24,7 +24,7 @@ jobs:
           port: 21
 
           # Pasta local dentro do repositório que será enviada
-          local-dir: ./VigilantOficial/
+          local-dir: ./
 
           # Pasta remota NO SERVIDOR (InfinityFree)
           server-dir: /htdocs/
