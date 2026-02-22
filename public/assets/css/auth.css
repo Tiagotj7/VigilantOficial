@@ -1,3 +1,5 @@
+/*--- auth.css --- Estilos para as páginas de autenticação (login e registro) --- */
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif}
 body.hero-bg{
     min-height:100vh;
@@ -84,7 +86,15 @@ body.hero-bg{
     font-size:13px;
     margin-bottom:12px;
 }
-.btn-primary.full{width:100%;margin-top:8px}
+.btn-primary.full{
+    width:100%;margin-top:8px
+}
+
+.btn-primary.full:hover{
+    box-shadow:0 20px 40px rgba(37,99,235,.5);
+    transform: scale(1.05, 1.05);
+    
+}
 
 .auth-switch{
     margin-top:12px;
