@@ -186,6 +186,10 @@ html[data-theme="dark"] .btn-primary.full{
     position:relative;
     font-size:16px;
 }
+.theme-toggle:hover{
+    filter:brightness(0.97);
+    box-shadow:0 0 0 2px var(--accent);
+}
 .theme-icon{
     position:absolute;
     opacity:0;
@@ -248,6 +252,7 @@ html[data-theme="dark"] .theme-icon-moon{opacity:1;}
 }
 .user-pill-link:hover{
     filter:brightness(0.97);
+    box-shadow:0 0 0 2px var(--accent);
 }
 
 /* KPI cards */
@@ -469,6 +474,10 @@ html[data-theme="dark"] canvas{
     font-weight:500;
     background:linear-gradient(135deg,#06b6d4,#3b82f6);
     color:white;
+}
+.btn-primary-sm:hover{
+    filter:brightness(0.95);
+    box-shadow: 0 4px 14px rgba(59,130,246,0.4);
 }
 .btn-outline-sm{
     padding:7px 14px;
