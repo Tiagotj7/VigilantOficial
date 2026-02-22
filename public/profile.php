@@ -85,38 +85,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'chang
 // Upload de foto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'upload_avatar') {
     if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
-        $error = 'Erro ao enviar a imagem.';
+        $error = 'Erro ao enviar a imagem. Código: ' . ($_FILES['avatar']['error'] ?? 'desconhecido');
     } else {
         $file = $_FILES['avatar'];
 
         $allowed = ['image/png', 'image/jpeg', 'image/jpg'];
         if (!in_array($file['type'], $allowed, true)) {
-            $error = 'A imagem deve ser PNG ou JPG.';
+            $error = 'A imagem deve ser PNG ou JPG. Tipo recebido: ' . $file['type'];
         } else {
+            // Caminho físico da pasta de upload (no servidor)
+            // profile.php está em /htdocs/VigilantOficial/public
             $uploadDir = __DIR__ . '/assets/uploads/profile';
+
             if (!is_dir($uploadDir)) {
-                @mkdir($uploadDir, 0775, true);
+                // Em InfinityFree você já criou essa pasta no File Manager,
+                // então esse mkdir normalmente não será necessário.
+                if (!@mkdir($uploadDir, 0775, true)) {
+                    $error = 'Não foi possível acessar a pasta de upload: ' . $uploadDir;
+                }
             }
 
-            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            if (!in_array($ext, ['png', 'jpg', 'jpeg'], true)) {
-                $ext = 'png';
-            }
+            if (!$error) {
+                $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                if (!in_array($ext, ['png', 'jpg', 'jpeg'], true)) {
+                    $ext = 'png';
+                }
 
-            $fileName = 'user_' . $userId . '.' . $ext;
-            $destPath = $uploadDir . '/' . $fileName;
+                $fileName = 'user_' . $userId . '.' . $ext;
+                $destPath = $uploadDir . '/' . $fileName;
 
-            if (move_uploaded_file($file['tmp_name'], $destPath)) {
-                $stmtAvatar = $db->prepare('UPDATE users SET profile_image = :img WHERE id = :id');
-                $stmtAvatar->execute([
-                    'img' => $fileName,
-                    'id'  => $userId,
-                ]);
+                if (move_uploaded_file($file['tmp_name'], $destPath)) {
+                    $stmtAvatar = $db->prepare('UPDATE users SET profile_image = :img WHERE id = :id');
+                    $stmtAvatar->execute([
+                        'img' => $fileName,
+                        'id'  => $userId,
+                    ]);
 
-                $user['profile_image'] = $fileName;
-                $success = 'Foto de perfil atualizada.';
-            } else {
-                $error = 'Não foi possível salvar a imagem enviada.';
+                    $user['profile_image'] = $fileName;
+                    $success = 'Foto de perfil atualizada.';
+                } else {
+                    $error = 'Não foi possível salvar a imagem enviada (move_uploaded_file falhou).';
+                }
             }
         }
     }
