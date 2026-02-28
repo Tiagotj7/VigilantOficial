@@ -5,21 +5,34 @@ require_once __DIR__ . '/../app/models/Metric.php';
 require_once __DIR__ . '/../app/core/Database.php';
 
 Auth::requireLogin();
-$userId  = Auth::userId();
-$targets = Target::allByUser($userId);
-$summary = Metric::latestSummary($userId) ?? [];
 
-// buscar dados do usuário (incluindo foto)
+$userId = Auth::userId();
+
+// Defesa extra
+if (!$userId && session_status() === PHP_SESSION_NONE) {
+    session_start();
+    $userId = $_SESSION['user_id'] ?? null;
+}
+
+if (!$userId) {
+    header('Location: login.php');
+    exit;
+}
+
+$targets = Target::allByUser((int)$userId);
+$summary = Metric::latestSummary((int)$userId) ?? [];
+
+// Dados do usuário
 $db = Database::getConnection();
 $stmtUser = $db->prepare('SELECT name, email, profile_image FROM users WHERE id = :id LIMIT 1');
 $stmtUser->execute(['id' => $userId]);
 $user = $stmtUser->fetch() ?: [];
 
-// fallback se algo der muito errado
+// Fallback
 $displayName = $user['name']  ?? ($_SESSION['user_name']  ?? 'Usuário');
 $displayMail = $user['email'] ?? ($_SESSION['user_email'] ?? '');
 
-// montar URL do avatar (foto ou default)
+// Avatar
 $avatarUrl = 'assets/img/avatar-default.png';
 if (!empty($user['profile_image'])) {
     $candidate = 'assets/uploads/profile/' . $user['profile_image'];
@@ -28,11 +41,11 @@ if (!empty($user['profile_image'])) {
     }
 }
 
-// Flags de estado
+// Flags
 $hasTargets = !empty($targets);
 $hasMetrics = !empty($summary);
 
-// KPIs básicos calculados a partir do resumo
+// KPIs
 $uptimeSum = 0;
 $uptimeCount = 0;
 $latSum = 0;
@@ -74,7 +87,6 @@ $sslValidade   = $sslTotal   ? (($sslOk / $sslTotal) * 100) : null;
     <main class="main">
         <section id="section-main-dashboard" class="main-section">
 
-            <!-- HERO -->
             <header class="topbar hero-bar">
                 <div>
                     <h1>Vigilant – Monitoramento Inteligente de Sites</h1>
@@ -95,52 +107,37 @@ $sslValidade   = $sslTotal   ? (($sslOk / $sslTotal) * 100) : null;
             <section class="kpi-grid">
                 <div class="kpi-card">
                     <p>Uptime Médio</p>
-                    <h2 id="kpi-uptime">
-                        <?= $uptimeMedio === null ? '--' : number_format($uptimeMedio, 2) . '%' ?>
-                    </h2>
-                    <span class="kpi-sub">
-                        <?= !$hasTargets ? 'Cadastre um site para começar' : (!$hasMetrics ? 'Aguardando primeira coleta' : 'Baseado nos últimos checks') ?>
-                    </span>
+                    <h2><?= $uptimeMedio === null ? '--' : number_format($uptimeMedio, 2) . '%' ?></h2>
                 </div>
                 <div class="kpi-card">
                     <p>Latência Média</p>
-                    <h2 id="kpi-response">
-                        <?= $latenciaMedia === null ? '--' : number_format($latenciaMedia, 1) . ' ms' ?>
-                    </h2>
-                    <span class="kpi-sub">
-                        <?= !$hasTargets ? 'Sem sites cadastrados' : (!$hasMetrics ? 'Aguardando primeira coleta' : 'Respostas HTTP') ?>
-                    </span>
+                    <h2><?= $latenciaMedia === null ? '--' : number_format($latenciaMedia, 1) . ' ms' ?></h2>
                 </div>
                 <div class="kpi-card">
-                    <p>Certificados SSL Válidos</p>
-                    <h2 id="kpi-ssl">
-                        <?= $sslValidade === null ? '--' : number_format($sslValidade, 0) . '%' ?>
-                    </h2>
-                    <span class="kpi-sub">
-                        <?= !$hasTargets ? 'Sem sites cadastrados' : (!$hasMetrics ? 'Aguardando primeira coleta' : 'Entre os seus sites') ?>
-                    </span>
+                    <p>SSL Válido</p>
+                    <h2><?= $sslValidade === null ? '--' : number_format($sslValidade, 0) . '%' ?></h2>
                 </div>
                 <div class="kpi-card">
                     <p>Sites Monitorados</p>
                     <h2><?= count($targets); ?></h2>
-                    <span class="kpi-sub">Ativos na conta</span>
                 </div>
             </section>
 
-            <!-- EMPTY STATE -->
+            <!-- Estados -->
             <?php if (!$hasTargets): ?>
                 <div class="card" style="text-align:center;padding:40px;">
                     <h3>📡 Nenhum site cadastrado ainda</h3>
                     <p>Adicione um site, API ou link para começar o monitoramento.</p>
                     <a href="add_target.php" class="btn-primary">Adicionar primeiro alvo</a>
                 </div>
+
             <?php elseif (!$hasMetrics): ?>
                 <div class="card" style="text-align:center;padding:40px;">
                     <h3>⏳ Aguardando primeira coleta</h3>
                     <p>Seu site foi cadastrado. Em alguns minutos o monitor irá coletar os primeiros dados.</p>
                 </div>
+
             <?php else: ?>
-                <!-- GRID PRINCIPAL (só aparece quando há métricas) -->
                 <section class="content-grid">
                     <div class="card large">
                         <div class="card-header">
@@ -154,7 +151,5 @@ $sslValidade   = $sslTotal   ? (($sslOk / $sslTotal) * 100) : null;
         </section>
     </main>
 </div>
-
-<script src="assets/js/main.js"></script>
 </body>
 </html>
