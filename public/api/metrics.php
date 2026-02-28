@@ -11,19 +11,23 @@ if (!Auth::check()) {
     exit;
 }
 
-$userId = Auth::userId();
+date_default_timezone_set(APP_TIMEZONE ?? 'America/Sao_Paulo');
+
+$userId = (int) Auth::userId();
 $targets = Target::allByUser($userId);
 
-$now = new DateTime();
+$now = new DateTime('now');
 $from = (clone $now)->modify('-7 days');
 
 $data = [];
+
 foreach ($targets as $t) {
     $rows = Metric::timeSeriesForTarget(
         (int)$t['id'],
         $from->format('Y-m-d H:i:s'),
         $now->format('Y-m-d H:i:s')
     );
+
     $data[] = [
         'target' => $t['name'],
         'id'     => (int)$t['id'],
@@ -31,4 +35,4 @@ foreach ($targets as $t) {
     ];
 }
 
-echo json_encode(['series' => $data]);
+echo json_encode(['series' => $data], JSON_UNESCAPED_UNICODE);

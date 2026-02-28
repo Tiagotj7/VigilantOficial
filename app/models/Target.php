@@ -31,4 +31,12 @@ class Target
         $stmt = $db->query('SELECT * FROM targets WHERE status = 1');
         return $stmt->fetchAll();
     }
+
+    // ✅ NOVO MÉTODO PARA O CRON
+    public static function allActive(): array
+    {
+        $db = Database::getConnection();
+        $stmt = $db->query('SELECT * FROM targets WHERE status = 1');
+        return $stmt->fetchAll();
+    }
 }

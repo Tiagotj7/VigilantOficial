@@ -10,6 +10,9 @@ define('DB_USER',    Env::get('DB_USER', 'root'));
 define('DB_PASS',    Env::get('DB_PASS', ''));
 define('DB_CHARSET', Env::get('DB_CHARSET', 'utf8mb4'));
 
+define('CRON_KEY', $_ENV['CRON_KEY'] ?? null);
+define('APP_TIMEZONE', 'America/Sao_Paulo');
+
 define('BASE_URL',   Env::get('BASE_URL', '/vigilant/public'));
 
 define('APP_ENV',    Env::get('APP_ENV', 'local'));
