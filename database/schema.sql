@@ -64,3 +64,13 @@ ADD INDEX idx_checked_at (checked_at);
 
 ALTER TABLE targets 
 ADD INDEX idx_user_status (user_id, status);
+
+CREATE TABLE targets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
