@@ -1,47 +1,51 @@
-// public/target-create.php
 <?php
 require_once __DIR__ . '/../app/core/Auth.php';
 require_once __DIR__ . '/../app/models/Target.php';
 
+// Garante sessão + login
 Auth::requireLogin();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $url  = trim($_POST['url'] ?? '');
+$userId = Auth::userId();
 
-    if ($name && $url) {
-        Target::create([
-            'user_id' => Auth::userId(),
-            'name' => 'Vigilant',
-            'url'  => 'https://httpstat.us/200'
-        ]);
-        header('Location: dashboard.php');
-        exit;
-    }
-
-    $error = 'Preencha nome e URL.';
+// Defesa extra (InfinityFree às vezes perde sessão se não iniciar antes do output)
+if (!$userId && session_status() === PHP_SESSION_NONE) {
+    session_start();
+    $userId = $_SESSION['user_id'] ?? null;
 }
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Novo Site</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body class="auth-page">
-    <form method="post" class="card auth-card">
-        <h2>Adicionar Site</h2>
 
-        <?php if (!empty($error)): ?>
-            <p style="color:red"><?= $error ?></p>
-        <?php endif; ?>
+if (!$userId) {
+    http_response_code(401);
+    exit('Erro: usuário não autenticado.');
+}
 
-        <input type="text" name="name" placeholder="Nome do site" required>
-        <input type="url" name="url" placeholder="https://exemplo.com" required>
+// Só aceita POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit('Método não permitido');
+}
 
-        <button class="btn-primary full">Salvar</button>
-        <a href="dashboard.php" class="btn-secondary-outline full">Cancelar</a>
-    </form>
-</body>
-</html>
+// Inputs
+$name = trim($_POST['name'] ?? '');
+$url  = trim($_POST['url'] ?? '');
+
+if ($name === '' || $url === '') {
+    header('Location: dashboard.php?err=campos');
+    exit;
+}
+
+if (!filter_var($url, FILTER_VALIDATE_URL)) {
+    header('Location: dashboard.php?err=url');
+    exit;
+}
+
+try {
+    Target::create($userId, $name, $url);
+    header('Location: dashboard.php?ok=1');
+    exit;
+} catch (Throwable $e) {
+    // Debug temporário (se quiser ver o erro real)
+    // die($e->getMessage());
+
+    http_response_code(500);
+    exit('Erro ao criar site.');
+}
