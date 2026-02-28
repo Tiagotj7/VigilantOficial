@@ -1,4 +1,5 @@
 <?php
+#app/core/Database.php - classe para gerenciar a conexão com o banco de dados usando PDO
 require_once __DIR__ . '/../config/config.php';
 
 class Database

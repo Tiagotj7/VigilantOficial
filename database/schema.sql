@@ -58,3 +58,9 @@ VALUES ('Admin', 'admin@vigilant.local', SHA2('admin123', 256), 1);
 
 ALTER TABLE users
 ADD COLUMN profile_image VARCHAR(255) NULL AFTER status;
+
+ALTER TABLE metrics 
+ADD INDEX idx_checked_at (checked_at);
+
+ALTER TABLE targets 
+ADD INDEX idx_user_status (user_id, status);
