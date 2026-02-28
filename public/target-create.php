@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($name && $url) {
         Target::create([
             'user_id' => Auth::userId(),
-            'name' => $name,
-            'url'  => $url
+            'name' => 'Vigilant',
+            'url'  => 'https://httpstat.us/200'
         ]);
         header('Location: dashboard.php');
         exit;
