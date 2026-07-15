@@ -8,16 +8,48 @@
 
 html, body {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   @apply bg-zinc-950 text-zinc-50 antialiased;
   background-image:
-    radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,0.18), transparent 60%),
-    radial-gradient(900px 500px at 80% 30%, rgba(16,185,129,0.14), transparent 55%),
-    radial-gradient(1000px 700px at 50% 90%, rgba(168,85,247,0.12), transparent 55%);
+    radial-gradient(1200px 700px at 18% 12%, rgba(59,130,246,0.20), transparent 60%),
+    radial-gradient(1000px 650px at 80% 28%, rgba(34,197,94,0.12), transparent 55%),
+    radial-gradient(1200px 800px at 50% 90%, rgba(168,85,247,0.10), transparent 60%),
+    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.10), transparent 2px),
+    radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,0.08), transparent 2px),
+    radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.08), transparent 2px),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.06), transparent 2px);
 }
 
 ::selection {
   background: rgba(59, 130, 246, 0.35);
+}
+
+@layer utilities {
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.04),
+      0 30px 80px rgba(0,0,0,0.35);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 40px rgba(59,130,246,0.22);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 40px rgba(34,197,94,0.20);
+  }
+}
+
+/* Hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

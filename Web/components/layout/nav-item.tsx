@@ -5,7 +5,13 @@ import { usePathname } from "next/navigation";
 import type { NavItem } from "@/lib/navigation";
 import { cn } from "@/lib/cn";
 
-export function NavLink({ item, onNavigate }: { item: NavItem; onNavigate?: () => void }) {
+export function NavLink({
+  item,
+  onNavigate,
+}: {
+  item: NavItem;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
   const active = pathname === item.href;
 
