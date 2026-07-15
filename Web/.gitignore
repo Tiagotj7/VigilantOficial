@@ -1,2 +1,61 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*.next/dev
+# =========================
+# Env (NUNCA commitar)
+# =========================
 .env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =========================
+# Node
+# =========================
 node_modules/
+*.tsbuildinfo
+
+# =========================
+# Next.js (ignora qualquer .next)
+# =========================
+.next/
+out/
+.vercel/
+
+# caches
+.eslintcache
+.cache/
+
+# =========================
+# NestJS / Node build artifacts
+# =========================
+dist/
+coverage/
+.nyc_output/
+.nest/
+
+# =========================
+# Docker / local
+# =========================
+docker-data/
+
+# =========================
+# Secrets / keys (boa prática)
+# =========================
+*.pem
+*.key
