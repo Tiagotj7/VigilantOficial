@@ -7,7 +7,7 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-*.next/dev
+
 # =========================
 # Env (NUNCA commitar)
 # =========================
