@@ -1,13 +1,41 @@
-import { cn } from "@/lib/cn";
+"use client";
 
-export function Logo({ className }: { className?: string }) {
+import Image from "next/image";
+import Link from "next/link";
+
+export default function Logo() {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <div className="h-9 w-9 rounded-xl border border-white/10 bg-gradient-to-b from-white/10 to-white/5 shadow-[0_0_30px_rgba(59,130,246,0.18)] backdrop-blur" />
-      <div className="leading-tight">
-        <div className="text-sm font-semibold tracking-tight">Vigilant</div>
-        <div className="text-[11px] text-zinc-400">Ops Center</div>
+    <Link
+      href="/"
+      className="flex items-center gap-3"
+    >
+      <div
+        className="
+          relative
+          h-11
+          w-11
+          overflow-hidden
+          rounded-xl
+        "
+      >
+        <Image
+          src="/logo.png" // troque pelo nome da sua logo
+          alt="Vigilant"
+          fill
+          className="object-contain"
+          priority
+        />
       </div>
-    </div>
+
+      <div className="leading-tight">
+        <h2 className="text-lg font-bold text-white">
+          Vigilant
+        </h2>
+
+        <p className="text-xs text-zinc-400">
+          Website Monitoring
+        </p>
+      </div>
+    </Link>
   );
 }

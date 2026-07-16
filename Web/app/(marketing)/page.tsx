@@ -1,62 +1,37 @@
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import Background from "@/components/landing/background";
+import Hero from "@/components/landing/hero";
+import Navbar from "@/components/landing/navbar";
+import Dashboard from "@/components/landing/dashboard";
+import Stats from "@/components/landing/stats";
+import Integrations from "@/components/landing/integrations";
+import Timeline from "@/components/landing/timeline";
+import Testimonials from "@/components/landing/testimonials";
+import CTA from "@/components/landing/cta";
+import Footer from "@/components/landing/footer";
 
-export default function MarketingHome() {
+export default function MarketingPage() {
   return (
-    <main className="space-y-10">
-      <section className="space-y-4">
-        <Badge tone="blue">Vigilant • Intelligent Ops Center</Badge>
+    <>
+      <Background />
 
-        <h1 className="text-balance text-4xl font-semibold tracking-tight md:text-5xl">
-          Monitoramento premium, em um painel único.
-        </h1>
+      <Navbar />
 
-        <p className="max-w-2xl text-pretty text-sm text-zinc-400 md:text-base">
-          Centralize uptime, latência, incidentes e alertas com uma experiência
-          moderna e minimalista — pronta para escalar.
-        </p>
+      <section className="relative z-10">
+        <Hero />
 
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Link href="/dashboard">
-            <Button variant="primary" className="w-full sm:w-auto">
-              Open dashboard
-            </Button>
-          </Link>
-          <Link href="/pricing">
-            <Button className="w-full sm:w-auto">View pricing</Button>
-          </Link>
-        </div>
+        <Dashboard />
 
-        {/* Teste rápido pra confirmar Tailwind funcionando */}
-        <div className="text-sm text-emerald-300">
-          Tailwind ativo ✅
-        </div>
+        <Stats />
+
+        <Integrations />
+
+        <Timeline />
+
+        <Testimonials />
+
+        <CTA />
       </section>
-
-      <section className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <div className="text-sm font-medium">Unified Monitoring</div>
-          <p className="mt-2 text-sm text-zinc-400">
-            Websites e APIs em um só lugar.
-          </p>
-        </Card>
-
-        <Card>
-          <div className="text-sm font-medium">Incidents</div>
-          <p className="mt-2 text-sm text-zinc-400">
-            Histórico, timelines e status page.
-          </p>
-        </Card>
-
-        <Card>
-          <div className="text-sm font-medium">Smart Alerts</div>
-          <p className="mt-2 text-sm text-zinc-400">
-            Email, Webhook e integrações.
-          </p>
-        </Card>
-      </section>
-    </main>
+      <Footer />
+    </>
   );
 }

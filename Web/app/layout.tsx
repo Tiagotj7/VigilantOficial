@@ -3,12 +3,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Vigilant",
-  description: "Intelligent Infrastructure Monitoring",
+  description: "Intelligent Monitoring",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="pt-BR">
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+    >
       <body>{children}</body>
     </html>
   );
