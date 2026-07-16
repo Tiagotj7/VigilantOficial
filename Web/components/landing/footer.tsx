@@ -7,8 +7,7 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 
-import Logo from "@/components/brand/logo";
-import FooterColumn from "./footer-column";
+import { Logo } from "@/components/brand/logo";import FooterColumn from "./footer-column";
 import { ArrowUp } from "lucide-react";
 
 const product = [

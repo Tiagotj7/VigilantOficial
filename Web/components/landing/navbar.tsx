@@ -6,8 +6,7 @@ import {
   Menu,
 } from "lucide-react";
 
-import Logo from "@/components/brand/logo";
-
+import { Logo } from "@/components/brand/logo";
 const links = [
   {
     label: "Soluções",
