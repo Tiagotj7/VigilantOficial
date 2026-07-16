@@ -9,7 +9,9 @@ import CtaStats from "./cta-stats";
 
 export default function CTA() {
   return (
-    <section className="relative overflow-hidden py-10">
+    <section className="relative overflow-hidden py-10"
+    id="cta"
+    >
 
       <CtaBackground />
 

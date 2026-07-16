@@ -47,7 +47,9 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="py-4">
+    <section className="py-4"
+    id="stats"
+    >
 
       <div className="mx-auto max-w-7xl px-6">
 
@@ -64,6 +66,7 @@ export default function Stats() {
               text-sm
               text-cyan-300
             "
+            
           >
             Estatísticas
           </span>

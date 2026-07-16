@@ -57,7 +57,9 @@ const legal = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10">
+    <footer className="border-t border-white/10"
+    id="contact"
+    >
 
       <div className="mx-auto max-w-7xl px-6 py-20">
 

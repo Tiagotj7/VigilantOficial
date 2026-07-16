@@ -18,7 +18,7 @@ const links = [
   },
   {
     label: "Preços",
-    href: "/pricing",
+    href: "#cta",
   },
   {
     label: "Contato",

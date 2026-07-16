@@ -47,6 +47,7 @@ export default function DashboardMonitors() {
         bg-white/[0.03]
         overflow-hidden
       "
+      
     >
       <div className="border-b border-white/10 px-6 py-5">
 

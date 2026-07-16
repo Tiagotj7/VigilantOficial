@@ -18,6 +18,7 @@ export default function DashboardHeader() {
         px-8
         py-5
       "
+      id="solutions"
     >
       <div className="flex items-center gap-4">
 
