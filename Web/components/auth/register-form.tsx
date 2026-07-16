@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { Mail, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import AuthDivider from "./auth-divider";
 import AuthFooter from "./auth-footer";
@@ -12,18 +14,29 @@ import PasswordStrength from "./password-strength";
 import LoadingButton from "./loading-button";
 
 export default function RegisterForm() {
+    const router = useRouter();
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
 
+    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setLoading(true);
+
+        // TODO: substituir por chamada real de cadastro
+        setTimeout(() => {
+            router.push("/login");
+        }, 600);
+    }
+
     return (
-        <form className="space-y-3.5">
+        <form className="space-y-2.5" onSubmit={handleSubmit}>
 
             {/* Nome */}
 
             <div>
 
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-1 block text-sm text-zinc-300">
                     Nome completo
                 </label>
 
@@ -38,7 +51,7 @@ export default function RegisterForm() {
                         type="text"
                         placeholder="João da Silva"
                         className="
-              h-11
+              h-10
               w-full
               rounded-xl
               border
@@ -61,7 +74,7 @@ export default function RegisterForm() {
 
             <div>
 
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-1 block text-sm text-zinc-300">
                     Email
                 </label>
 
@@ -76,7 +89,7 @@ export default function RegisterForm() {
                         type="email"
                         placeholder="voce@email.com"
                         className="
-              h-11
+              h-10
               w-full
               rounded-xl
               border
@@ -99,7 +112,7 @@ export default function RegisterForm() {
 
             <div>
 
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-1 block text-sm text-zinc-300">
                     Senha
                 </label>
 
@@ -117,7 +130,7 @@ export default function RegisterForm() {
 
             <div>
 
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-1 block text-sm text-zinc-300">
                     Confirmar senha
                 </label>
 

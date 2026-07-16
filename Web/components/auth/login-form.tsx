@@ -2,19 +2,33 @@
 
 import Link from "next/link";
 import { Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import AuthDivider from "./auth-divider";
 import AuthFooter from "./auth-footer";
 import PasswordInput from "./password-input";
 import SocialLogin from "./social-login";
 import { useState } from "react";
+import type { FormEvent } from "react";
 import LoadingButton from "./loading-button";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+
+    // TODO: substituir por chamada real de autenticação
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 600);
+  }
+
   return (
-    <form className="space-y-6">
+    <form className="space-y-4" onSubmit={handleSubmit}>
 
       {/* Email */}
 
@@ -41,7 +55,7 @@ export default function LoginForm() {
             type="email"
             placeholder="voce@email.com"
             className="
-              h-12
+              h-10
               w-full
               rounded-xl
               border
