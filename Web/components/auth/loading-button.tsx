@@ -24,11 +24,15 @@ export default function LoadingButton({
         justify-center
         gap-3
         rounded-xl
-        bg-cyan-500
+        bg-gradient-to-b
+        from-blue-500/90
+        to-blue-600/90
         font-semibold
         text-white
+        shadow-[0_12px_40px_rgba(59,130,246,0.25)]
         transition
-        hover:bg-cyan-400
+        hover:from-blue-400/90
+        hover:to-blue-600/90
         disabled:opacity-70
       "
     >

@@ -1,37 +1,9 @@
-import { IconButton } from "@/components/ui/icon-button";
-import { Input } from "@/components/ui/input";
-import { Kbd } from "@/components/ui/kbd";
-import { Activity, Search } from "lucide-react";
+import Link from "next/link";
+import { Activity } from "lucide-react";
 import { MobileDrawer } from "@/components/layout/mobile-drawer";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { ProfileMenu } from "@/components/layout/profile-menu";
-
-function SearchBar({
-  className,
-  showKbd,
-}: {
-  className?: string;
-  showKbd?: boolean;
-}) {
-  return (
-    <div className={className}>
-      <div className="relative w-full">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-
-        <Input
-          className="h-10 w-full pl-9 pr-16"
-          placeholder="Pesquisar monitoramentos..."
-        />
-
-        {showKbd ? (
-          <div className="absolute right-2 top-1/2 -translate-y-1/2">
-            <Kbd>⌘ K</Kbd>
-          </div>
-        ) : null}
-      </div>
-    </div>
-  );
-}
+import { GlobalSearch } from "@/components/layout/global-search";
 
 export function Topbar() {
   return (
@@ -45,7 +17,7 @@ export function Topbar() {
 
         {/* Search DESKTOP: centralizado e com largura limitada */}
         <div className="hidden min-w-0 flex-1 md:flex">
-          <SearchBar
+          <GlobalSearch
             className="w-full max-w-[640px]"  // ajuste aqui se quiser menor/maior
             showKbd
           />
@@ -53,9 +25,13 @@ export function Topbar() {
 
         {/* Ações (sempre à direita) */}
         <div className="ml-auto flex items-center gap-2">
-          <IconButton aria-label="Activity">
+          <Link
+            href="/monitors"
+            aria-label="Ir para Monitoramentos"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-200 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+          >
             <Activity className="h-5 w-5 text-zinc-200" />
-          </IconButton>
+          </Link>
 
           <NotificationsMenu />
 
@@ -65,7 +41,7 @@ export function Topbar() {
 
       {/* Search MOBILE: segunda linha, full width */}
       <div className="mt-3 md:hidden">
-        <SearchBar showKbd={false} />
+        <GlobalSearch showKbd={false} />
       </div>
     </header>
   );

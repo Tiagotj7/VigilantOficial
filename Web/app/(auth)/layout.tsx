@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import AuthBackground from "@/components/auth/auth-background";
+import AuthBackButton from "@/components/auth/auth-back-button";
 
 interface Props {
   children: ReactNode;
@@ -19,12 +20,14 @@ export default function AuthLayout({
         justify-center
         overflow-x-hidden
         overflow-y-auto
-        bg-[#05070B]
+        bg-zinc-950
         px-6
         py-8
       "
     >
       <AuthBackground />
+
+      <AuthBackButton />
 
       {children}
 

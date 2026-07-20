@@ -24,7 +24,7 @@ export default function AuthBackground() {
           h-[500px]
           w-[500px]
           rounded-full
-          bg-cyan-500
+          bg-blue-500
           blur-[170px]
         "
       />
@@ -47,7 +47,7 @@ export default function AuthBackground() {
           h-[700px]
           w-[700px]
           rounded-full
-          bg-violet-600
+          bg-emerald-600
           blur-[220px]
         "
       />
