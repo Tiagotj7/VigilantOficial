@@ -1,9 +1,10 @@
 import { IconButton } from "@/components/ui/icon-button";
 import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
-import { Avatar } from "@/components/ui/avatar";
-import { Bell, Activity, Search } from "lucide-react";
+import { Activity, Search } from "lucide-react";
 import { MobileDrawer } from "@/components/layout/mobile-drawer";
+import { NotificationsMenu } from "@/components/layout/notifications-menu";
+import { ProfileMenu } from "@/components/layout/profile-menu";
 
 function SearchBar({
   className,
@@ -56,17 +57,9 @@ export function Topbar() {
             <Activity className="h-5 w-5 text-zinc-200" />
           </IconButton>
 
-          <div className="relative">
-            <IconButton aria-label="Notifications">
-              <Bell className="h-5 w-5 text-zinc-200" />
-            </IconButton>
+          <NotificationsMenu />
 
-            <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-blue-500 text-[11px] font-semibold text-white shadow-[0_0_22px_rgba(59,130,246,0.45)]">
-              2
-            </span>
-          </div>
-
-          <Avatar alt="Thiago Santos" />
+          <ProfileMenu />
         </div>
       </div>
 

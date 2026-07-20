@@ -1,5 +1,10 @@
 "use client";
 
+"use client";
+
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
+
 import { Logo } from "@/components/brand/logo";
 import { appNav } from "@/lib/navigation";
 import { NavLink } from "@/components/layout/nav-item";
@@ -9,6 +14,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 
 export function Sidebar() {
+  const router = useRouter();
+
+  function handleLogout() {
+    // TODO: substituir por chamada real de logout (limpar sessão/token)
+    router.push("/login");
+  }
+
   return (
     <aside className="hidden h-full min-h-0 md:block">
       <div className="glass no-scrollbar h-full min-h-0 w-72 overflow-y-auto rounded-3xl p-4">
@@ -42,6 +54,14 @@ export function Sidebar() {
               <div className="text-xs text-zinc-400">Administrador</div>
             </div>
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+          >
+            <LogOut className="h-4 w-4" />
+            Sair
+          </button>
         </div>
 
         <div className="h-2" />

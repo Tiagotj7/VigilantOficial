@@ -37,6 +37,13 @@ body {
       0 30px 80px rgba(0,0,0,0.35);
   }
 
+  .glass-popover {
+    @apply border border-white/10 bg-zinc-900/95 backdrop-blur-xl;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 30px 80px rgba(0,0,0,0.55);
+  }
+
   .glow-blue {
     box-shadow: 0 0 40px rgba(59,130,246,0.22);
   }

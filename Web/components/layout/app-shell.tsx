@@ -15,7 +15,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
             {/* Coluna direita: topbar fixa + main com scroll */}
             <div className="flex h-full min-h-0 min-w-0 flex-col gap-3 md:gap-5">
-              <div className="shrink-0">
+              <div className="relative z-20 shrink-0">
                 <Topbar />
               </div>
 

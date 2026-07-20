@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { X, Menu, LogOut } from "lucide-react";
 
 import { Logo } from "@/components/brand/logo";
 import { appNav } from "@/lib/navigation";
@@ -19,8 +20,15 @@ function useMounted() {
 export function MobileDrawer() {
   const [open, setOpen] = useState(false);
   const mounted = useMounted();
+  const router = useRouter();
 
   const items = useMemo(() => appNav, []);
+
+  function handleLogout() {
+    // TODO: substituir por chamada real de logout (limpar sessão/token)
+    setOpen(false);
+    router.push("/login");
+  }
 
   // trava scroll do background quando abre
   useEffect(() => {
@@ -93,6 +101,16 @@ export function MobileDrawer() {
                     ))}
                   </div>
                 </nav>
+
+                <Separator className="my-3" />
+
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sair
+                </button>
 
                 {/* safe-area spacer */}
                 <div className="h-[calc(env(safe-area-inset-bottom)+0.5rem)]" />

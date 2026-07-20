@@ -173,12 +173,36 @@ export default function Footer() {
           </p>
 
           <button
-            onClick={() =>
+            type="button"
+            onClick={() => {
+              // Scroll primeiro — sempre roda, independente do resto.
               window.scrollTo({
                 top: 0,
+                left: 0,
                 behavior: "smooth",
-              })
-            }
+              });
+
+              // Fallback síncrono, caso o smooth scroll não pegue
+              // (ex: prefers-reduced-motion ou navegador mais antigo).
+              document.documentElement.scrollTop = 0;
+              document.body.scrollTop = 0;
+
+              // Limpa o hash da URL (#contact, #features, etc.) para o
+              // navegador não "puxar" o scroll de volta pra âncora depois.
+              // Protegido: alguns previews/iframes bloqueiam a History API
+              // e lançavam erro aqui, impedindo até o scroll de rodar.
+              try {
+                if (window.location.hash) {
+                  window.history.replaceState(
+                    null,
+                    "",
+                    window.location.pathname + window.location.search
+                  );
+                }
+              } catch {
+                // ambiente bloqueia a History API — ignora e segue
+              }
+            }}
             className="
               flex
               items-center

@@ -49,7 +49,7 @@ export default function DashboardMonitors() {
       "
       
     >
-      <div className="border-b border-white/10 px-6 py-5">
+      <div className="border-b border-white/10 px-4 py-4 sm:px-6 lg:px-6 lg:py-5">
 
         <h2 className="font-semibold text-white">
           Active Monitors
@@ -66,11 +66,13 @@ export default function DashboardMonitors() {
             className="
               grid
               items-center
-              gap-4
+              gap-3
               border-b
               border-white/5
-              px-6
-              py-5
+              px-4
+              py-4
+              sm:px-6
+              sm:gap-4
               md:grid-cols-4
             "
           >
@@ -123,7 +125,11 @@ export default function DashboardMonitors() {
 
             </div>
 
-            <div className="font-semibold text-cyan-400">
+            <div className="flex items-center gap-2 font-semibold text-cyan-400">
+
+              <span className="text-xs font-normal text-zinc-500 md:hidden">
+                Uptime:
+              </span>
 
               {monitor.uptime}
 

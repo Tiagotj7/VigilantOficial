@@ -8,7 +8,7 @@ const plans = [
     description: "Ideal para projetos pessoais.",
     highlighted: false,
     features: [
-      "5 Monitores",
+      "3 Monitores",
       "Checks a cada 5 minutos",
       "Alertas por E-mail",
       "Dashboard",
@@ -20,7 +20,7 @@ const plans = [
     description: "Perfeito para startups e pequenas empresas.",
     highlighted: true,
     features: [
-      "100 Monitores",
+      "5 Monitores",
       "Checks a cada 1 minuto",
       "Status Page",
       "SSL Monitoring",
@@ -46,7 +46,7 @@ const plans = [
 
 export default function PricingPage() {
   return (
-    <main className="mx-auto max-w-7xl px-6 py-28">
+    <main className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28">
 
       <div className="mx-auto max-w-3xl text-center">
 
@@ -54,7 +54,7 @@ export default function PricingPage() {
           Pricing
         </span>
 
-        <h1 className="mt-8 text-5xl font-black text-white">
+        <h1 className="mt-8 text-4xl font-black text-white sm:text-5xl">
           Escolha o plano ideal
         </h1>
 
@@ -71,9 +71,9 @@ export default function PricingPage() {
 
           <div
             key={plan.name}
-            className={`rounded-3xl border p-8 backdrop-blur-xl transition-all duration-300 ${
+            className={`rounded-3xl border p-6 backdrop-blur-xl transition-all duration-300 sm:p-8 ${
               plan.highlighted
-                ? "border-cyan-500 bg-cyan-500/10 scale-105"
+                ? "border-cyan-500 bg-cyan-500/10 lg:scale-105"
                 : "border-white/10 bg-white/[0.03]"
             }`}
           >
