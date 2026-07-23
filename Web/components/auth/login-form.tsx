@@ -2,33 +2,29 @@
 
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useActionState } from "react";
 
 import AuthDivider from "./auth-divider";
 import AuthFooter from "./auth-footer";
 import PasswordInput from "./password-input";
 import SocialLogin from "./social-login";
-import { useState } from "react";
-import type { FormEvent } from "react";
 import LoadingButton from "./loading-button";
+import { login, type AuthActionState } from "@/app/actions/auth";
 
 export default function LoginForm() {
-  const router = useRouter();
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
-
-    // TODO: substituir por chamada real de autenticação
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 600);
-  }
+  const [state, formAction, pending] = useActionState<AuthActionState, FormData>(
+    login,
+    null,
+  );
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-4" action={formAction}>
+
+      {state?.error ? (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-300">
+          {state.error}
+        </div>
+      ) : null}
 
       {/* Email */}
 
@@ -52,8 +48,10 @@ export default function LoginForm() {
           />
 
           <input
+            name="email"
             type="email"
             placeholder="voce@email.com"
+            required
             className="
               h-10
               w-full
@@ -98,9 +96,9 @@ export default function LoginForm() {
         </div>
 
         <PasswordInput
+          name="password"
           placeholder="Sua senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
       </div>
@@ -108,7 +106,7 @@ export default function LoginForm() {
       {/* Entrar */}
 
       <LoadingButton
-        loading={loading}
+        loading={pending}
         text="Entrar"
         loadingText="Entrando..."
       />

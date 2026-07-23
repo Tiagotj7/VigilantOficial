@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, Menu, LogOut } from "lucide-react";
 
@@ -11,18 +10,9 @@ import { NavLink } from "@/components/layout/nav-item";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-function useMounted() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  return mounted;
-}
-
 export function MobileDrawer() {
   const [open, setOpen] = useState(false);
-  const mounted = useMounted();
   const router = useRouter();
-
-  const items = useMemo(() => appNav, []);
 
   function handleLogout() {
     // TODO: substituir por chamada real de logout (limpar sessão/token)
@@ -65,8 +55,7 @@ export function MobileDrawer() {
         <Menu className="h-5 w-5" />
       </Button>
 
-      {mounted && open
-        ? createPortal(
+      {open ? (
             <div className="fixed inset-0 z-[100] md:hidden">
               {/* overlay */}
               <div
@@ -92,7 +81,7 @@ export function MobileDrawer() {
 
                 <nav className="max-h-[calc(100dvh-7rem)] overflow-y-auto pr-1">
                   <div className="space-y-1">
-                    {items.map((item) => (
+                    {appNav.map((item) => (
                       <NavLink
                         key={item.href}
                         item={item}
@@ -115,10 +104,8 @@ export function MobileDrawer() {
                 {/* safe-area spacer */}
                 <div className="h-[calc(env(safe-area-inset-bottom)+0.5rem)]" />
               </div>
-            </div>,
-            document.body
-          )
-        : null}
+            </div>
+          ) : null}
     </div>
   );
 }

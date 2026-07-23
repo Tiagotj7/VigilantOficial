@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useActionState, useState } from "react";
 import { Mail, User } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 import AuthDivider from "./auth-divider";
 import AuthFooter from "./auth-footer";
@@ -12,25 +10,23 @@ import PasswordInput from "./password-input";
 import SocialLogin from "./social-login";
 import PasswordStrength from "./password-strength";
 import LoadingButton from "./loading-button";
+import { signup, type AuthActionState } from "@/app/actions/auth";
 
 export default function RegisterForm() {
-    const router = useRouter();
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [acceptTerms, setAcceptTerms] = useState(false);
-
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setLoading(true);
-
-        // TODO: substituir por chamada real de cadastro
-        setTimeout(() => {
-            router.push("/login");
-        }, 600);
-    }
+    const [state, formAction, pending] = useActionState<AuthActionState, FormData>(
+        signup,
+        null,
+    );
 
     return (
-        <form className="space-y-2.5" onSubmit={handleSubmit}>
+        <form className="space-y-2.5" action={formAction}>
+
+            {state?.error ? (
+                <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-300">
+                    {state.error}
+                </div>
+            ) : null}
 
             {/* Nome */}
 
@@ -48,8 +44,10 @@ export default function RegisterForm() {
                     />
 
                     <input
+                        name="name"
                         type="text"
                         placeholder="João da Silva"
+                        required
                         className="
               h-10
               w-full
@@ -86,8 +84,10 @@ export default function RegisterForm() {
                     />
 
                     <input
+                        name="email"
                         type="email"
                         placeholder="voce@email.com"
+                        required
                         className="
               h-10
               w-full
@@ -117,9 +117,11 @@ export default function RegisterForm() {
                 </label>
 
                 <PasswordInput
+                    name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Crie uma senha"
+                    required
                 />
 
                 <PasswordStrength password={password} />
@@ -134,7 +136,7 @@ export default function RegisterForm() {
                     Confirmar senha
                 </label>
 
-                <PasswordInput placeholder="Digite novamente" />
+                <PasswordInput name="confirmPassword" placeholder="Digite novamente" required />
 
             </div>
 
@@ -144,8 +146,7 @@ export default function RegisterForm() {
 
                 <input
                     type="checkbox"
-                    checked={acceptTerms}
-                    onChange={(e) => setAcceptTerms(e.target.checked)}
+                    required
                     className="mt-1 accent-cyan-500"
                 />
 
@@ -171,7 +172,7 @@ export default function RegisterForm() {
             {/* Botão */}
 
             <LoadingButton
-                loading={loading}
+                loading={pending}
                 text="Criar Conta"
                 loadingText="Criando conta..."
             />

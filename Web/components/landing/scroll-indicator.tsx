@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronDown, Mouse } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 export default function ScrollIndicator() {
   const scrollToNextSection = () => {

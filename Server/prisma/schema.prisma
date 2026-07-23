@@ -1,0 +1,194 @@
+// Prisma schema — projeto de monitoramento (Supabase Postgres)
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Usada em runtime pela aplicação — passa pelo PgBouncer (porta 6543) do Supabase.
+  url       = env("DATABASE_URL")
+  // Usada só pelo CLI do Prisma (migrate/introspect) — conexão direta (porta 5432),
+  // necessária porque o pooler em modo transaction não suporta algumas operações de DDL.
+  directUrl = env("DIRECT_URL")
+}
+
+// -----------------------------------------------------------------------
+// Auth: a autenticação real (senha, sessão, OAuth) fica por conta do
+// Supabase Auth (schema `auth`, tabela `auth.users`). Este modelo é o
+// "perfil" do usuário no schema `public`, com o MESMO id (uuid) do
+// auth.users. Não criamos uma FK de verdade para auth.users porque ela
+// vive em outro schema e é gerenciada pelo Supabase, não pelo Prisma.
+model Profile {
+  id        String   @id @db.Uuid // igual ao auth.users.id do Supabase
+  email     String   @unique
+  name      String?
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  memberships  Membership[]
+  incidentLogs IncidentUpdate[]
+
+  @@map("profiles")
+}
+
+enum OrgRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+// Workspace/conta — cada organização tem seus próprios monitores e equipe.
+model Organization {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members      Membership[]
+  monitors     Monitor[]
+  statusPages  StatusPage[]
+  integrations Integration[]
+
+  @@map("organizations")
+}
+
+model Membership {
+  id             String       @id @default(uuid()) @db.Uuid
+  role           OrgRole      @default(MEMBER)
+  organizationId String       @map("organization_id") @db.Uuid
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  profileId      String       @map("profile_id") @db.Uuid
+  profile        Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now()) @map("created_at")
+
+  @@unique([organizationId, profileId])
+  @@map("memberships")
+}
+
+enum MonitorKind {
+  WEB
+  DB
+  VPS
+  TCP
+}
+
+enum MonitorStatus {
+  ONLINE
+  OFFLINE
+  DEGRADED
+  PAUSED
+}
+
+// Corresponde ao ServiceRow do front (lib/services-data.ts)
+model Monitor {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String        @map("organization_id") @db.Uuid
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  name           String
+  target         String        // URL, host:porta, IP etc.
+  kind           MonitorKind   @default(WEB)
+  status         MonitorStatus @default(ONLINE)
+  intervalSec    Int           @default(60) @map("interval_sec")
+
+  lastCheckAt    DateTime?     @map("last_check_at")
+  lastLatencyMs  Int?          @map("last_latency_ms")
+  uptimePct      Decimal       @default(100) @db.Decimal(5, 2) @map("uptime_pct")
+
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  checks    MonitorCheck[]
+  incidents Incident[]
+
+  @@index([organizationId])
+  @@map("monitors")
+}
+
+// Histórico de checagens — alimenta os gráficos de uptime/latência.
+model MonitorCheck {
+  id         String        @id @default(uuid()) @db.Uuid
+  monitorId  String        @map("monitor_id") @db.Uuid
+  monitor    Monitor       @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+  status     MonitorStatus
+  latencyMs  Int?          @map("latency_ms")
+  statusCode Int?          @map("status_code")
+  checkedAt  DateTime      @default(now()) @map("checked_at")
+
+  @@index([monitorId, checkedAt])
+  @@map("monitor_checks")
+}
+
+enum IncidentStatus {
+  INVESTIGATING
+  IDENTIFIED
+  MONITORING
+  RESOLVED
+}
+
+model Incident {
+  id         String         @id @default(uuid()) @db.Uuid
+  monitorId  String         @map("monitor_id") @db.Uuid
+  monitor    Monitor        @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+  title      String
+  status     IncidentStatus @default(INVESTIGATING)
+  startedAt  DateTime       @default(now()) @map("started_at")
+  resolvedAt DateTime?      @map("resolved_at")
+
+  updates IncidentUpdate[]
+
+  @@index([monitorId])
+  @@map("incidents")
+}
+
+model IncidentUpdate {
+  id         String         @id @default(uuid()) @db.Uuid
+  incidentId String         @map("incident_id") @db.Uuid
+  incident   Incident       @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  authorId   String?        @map("author_id") @db.Uuid
+  author     Profile?       @relation(fields: [authorId], references: [id])
+  status     IncidentStatus
+  message    String
+  createdAt  DateTime       @default(now()) @map("created_at")
+
+  @@map("incident_updates")
+}
+
+// Página pública de status (ex: status.suaempresa.com)
+model StatusPage {
+  id             String       @id @default(uuid()) @db.Uuid
+  organizationId String       @map("organization_id") @db.Uuid
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  slug           String       @unique
+  isPublic       Boolean      @default(true) @map("is_public")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@index([organizationId])
+  @@map("status_pages")
+}
+
+enum IntegrationType {
+  SLACK
+  DISCORD
+  WEBHOOK
+  EMAIL
+}
+
+model Integration {
+  id             String          @id @default(uuid()) @db.Uuid
+  organizationId String          @map("organization_id") @db.Uuid
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  type           IntegrationType
+  config         Json // ex: { "webhookUrl": "...", "channel": "#alerts" }
+  isActive       Boolean         @default(true) @map("is_active")
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  @@index([organizationId])
+  @@map("integrations")
+}

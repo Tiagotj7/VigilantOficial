@@ -10,11 +10,6 @@ import {
   Activity,
 } from "lucide-react";
 
-import HeroGlow from "./hero-glow";
-import HeroBackground from "./hero-background";
-import HeroFloating from "./hero-floating";
-import HeroTrust from "./hero-trust";
-
 import Announcement from "./announcement";
 
 const stats = [

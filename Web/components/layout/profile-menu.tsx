@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Settings, LogOut, User } from "lucide-react";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { logout } from "@/app/actions/auth";
 
 export function ProfileMenu() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Fecha ao clicar fora
@@ -40,9 +39,8 @@ export function ProfileMenu() {
   }, [open]);
 
   function handleLogout() {
-    // TODO: substituir por chamada real de logout (limpar sessão/token)
     setOpen(false);
-    router.push("/login");
+    logout();
   }
 
   return (

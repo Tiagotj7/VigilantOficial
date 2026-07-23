@@ -42,7 +42,7 @@ export default function TestimonialCard({
           text-zinc-300
         "
       >
-        "{text}"
+        &ldquo;{text}&rdquo;
       </p>
 
       <div className="mt-8 flex items-center gap-4">
