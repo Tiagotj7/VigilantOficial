@@ -22,6 +22,7 @@ export function Logo() {
           src="/logo.png" // troque pelo nome da sua logo
           alt="Vigilant"
           fill
+          sizes="44px"
           className="object-contain"
           priority
         />

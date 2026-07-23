@@ -86,6 +86,8 @@ export default function RegisterForm() {
                     <input
                         name="email"
                         type="email"
+                        autoComplete="email"
+                        inputMode="email"
                         placeholder="voce@email.com"
                         required
                         className="

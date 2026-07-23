@@ -4,8 +4,9 @@ import { MobileDrawer } from "@/components/layout/mobile-drawer";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { ProfileMenu } from "@/components/layout/profile-menu";
 import { GlobalSearch } from "@/components/layout/global-search";
+import type { CurrentUser } from "@/components/layout/app-shell";
 
-export function Topbar() {
+export function Topbar({ user }: { user: CurrentUser }) {
   return (
     <header className="glass rounded-3xl px-4 py-3">
       {/* Linha principal (desktop) / topo (mobile) */}
@@ -18,7 +19,7 @@ export function Topbar() {
         {/* Search DESKTOP: centralizado e com largura limitada */}
         <div className="hidden min-w-0 flex-1 md:flex">
           <GlobalSearch
-            className="w-full max-w-[640px]"  // ajuste aqui se quiser menor/maior
+            className="w-full max-w-[640px]"
             showKbd
           />
         </div>
@@ -35,7 +36,7 @@ export function Topbar() {
 
           <NotificationsMenu />
 
-          <ProfileMenu />
+          <ProfileMenu user={user} />
         </div>
       </div>
 

@@ -7,7 +7,7 @@ type StatsCardProps = {
   iconTone?: "green" | "purple" | "red";
   value: string;
   label: string;
-  deltaText: string;
+  deltaText?: string;
   deltaTone?: "up" | "down" | "neutral";
 };
 
@@ -40,7 +40,7 @@ export function StatsCard({
       <div className="min-w-0">
         <div className="text-2xl font-semibold tracking-tight">{value}</div>
         <div className="text-sm text-zinc-400">{label}</div>
-        <div className={cn("mt-1 text-xs", deltaClass)}>{deltaText}</div>
+        {deltaText ? <div className={cn("mt-1 text-xs", deltaClass)}>{deltaText}</div> : null}
       </div>
     </Card>
   );

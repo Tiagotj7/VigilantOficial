@@ -7,12 +7,12 @@ import { Settings, LogOut, User } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { logout } from "@/app/actions/auth";
+import type { CurrentUser } from "@/components/layout/app-shell";
 
-export function ProfileMenu() {
+export function ProfileMenu({ user }: { user: CurrentUser }) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Fecha ao clicar fora
   useEffect(() => {
     if (!open) return;
 
@@ -26,7 +26,6 @@ export function ProfileMenu() {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [open]);
 
-  // Fecha com ESC
   useEffect(() => {
     if (!open) return;
 
@@ -38,11 +37,6 @@ export function ProfileMenu() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  function handleLogout() {
-    setOpen(false);
-    logout();
-  }
-
   return (
     <div ref={containerRef} className="relative">
       <button
@@ -51,7 +45,7 @@ export function ProfileMenu() {
         aria-expanded={open}
         className="rounded-full transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
       >
-        <Avatar alt="Thiago Santos" />
+        <Avatar alt={user.name} />
       </button>
 
       {open ? (
@@ -69,13 +63,13 @@ export function ProfileMenu() {
           "
         >
           <div className="flex items-center gap-3 px-4 py-3">
-            <Avatar alt="Thiago Santos" />
+            <Avatar alt={user.name} />
             <div className="min-w-0">
               <div className="truncate text-sm font-medium text-white">
-                Thiago Santos
+                {user.name}
               </div>
               <div className="truncate text-xs text-zinc-400">
-                Administrador
+                {user.email}
               </div>
             </div>
           </div>
@@ -105,13 +99,15 @@ export function ProfileMenu() {
           <Separator />
 
           <div className="p-1.5">
-            <button
-              onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-400 transition hover:bg-red-500/10"
-            >
-              <LogOut className="h-4 w-4" />
-              Sair
-            </button>
+            <form action={logout}>
+              <button
+                type="submit"
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-red-400 transition hover:bg-red-500/10"
+              >
+                <LogOut className="h-4 w-4" />
+                Sair
+              </button>
+            </form>
           </div>
         </div>
       ) : null}

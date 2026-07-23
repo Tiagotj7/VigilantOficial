@@ -9,15 +9,27 @@ export type AuthActionState = {
   error?: string;
 } | null;
 
+function normalizeEmail(value: FormDataEntryValue | null) {
+  return String(value ?? "").normalize("NFKC").trim().toLowerCase();
+}
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 export async function login(
   _prevState: AuthActionState,
   formData: FormData,
 ): Promise<AuthActionState> {
-  const email = String(formData.get("email") ?? "").trim();
+  const email = normalizeEmail(formData.get("email"));
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
     return { error: "Preencha email e senha." };
+  }
+
+  if (!isValidEmail(email)) {
+    return { error: "Informe um endereço de email válido." };
   }
 
   const supabase = await createClient();
@@ -40,12 +52,16 @@ export async function signup(
   formData: FormData,
 ): Promise<AuthActionState> {
   const name = String(formData.get("name") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
+  const email = normalizeEmail(formData.get("email"));
   const password = String(formData.get("password") ?? "");
   const confirmPassword = String(formData.get("confirmPassword") ?? "");
 
   if (!name || !email || !password) {
     return { error: "Preencha todos os campos." };
+  }
+
+  if (!isValidEmail(email)) {
+    return { error: "Informe um endereço de email válido." };
   }
 
   if (password !== confirmPassword) {

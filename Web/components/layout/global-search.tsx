@@ -7,13 +7,14 @@ import { Search, Globe, Database, Server, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
 import { appNav } from "@/lib/navigation";
-import { services } from "@/lib/services-data";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/cn";
+import type { Monitor, MonitorKind } from "@/lib/types";
 
-function ServiceIcon({ kind }: { kind: "web" | "db" | "vps" }) {
+function ServiceIcon({ kind }: { kind: MonitorKind }) {
   const cls = "h-4 w-4 text-zinc-400";
-  if (kind === "web") return <Globe className={cls} />;
-  if (kind === "db") return <Database className={cls} />;
+  if (kind === "WEB") return <Globe className={cls} />;
+  if (kind === "DB") return <Database className={cls} />;
   return <Server className={cls} />;
 }
 
@@ -26,11 +27,43 @@ export function GlobalSearch({
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [monitors, setMonitors] = useState<Monitor[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const q = query.trim().toLowerCase();
+
+  // Carrega os monitores reais uma vez, ao focar a busca pela primeira vez.
+  useEffect(() => {
+    if (!open || monitors.length > 0) return;
+
+    let cancelled = false;
+
+    (async () => {
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session?.access_token) return;
+
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/monitors`,
+          { headers: { Authorization: `Bearer ${session.access_token}` } },
+        );
+        if (!res.ok) return;
+        const data = (await res.json()) as Monitor[];
+        if (!cancelled) setMonitors(data);
+      } catch {
+        // Busca de serviços é best-effort; falhas não bloqueiam a navegação por páginas.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, monitors.length]);
 
   const matchedPages = useMemo(() => {
     if (!q) return [];
@@ -39,11 +72,11 @@ export function GlobalSearch({
 
   const matchedServices = useMemo(() => {
     if (!q) return [];
-    return services.filter(
+    return monitors.filter(
       (s) =>
-        s.name.toLowerCase().includes(q) || s.subtitle.toLowerCase().includes(q)
+        s.name.toLowerCase().includes(q) || s.target.toLowerCase().includes(q)
     );
-  }, [q]);
+  }, [q, monitors]);
 
   const hasResults = matchedPages.length > 0 || matchedServices.length > 0;
 
@@ -157,7 +190,7 @@ export function GlobalSearch({
                   </div>
                   {matchedServices.map((s) => (
                     <button
-                      key={s.name}
+                      key={s.id}
                       onClick={() => goTo("/dashboard")}
                       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-zinc-200 transition hover:bg-white/8"
                     >
@@ -166,7 +199,7 @@ export function GlobalSearch({
                       <span
                         className={cn(
                           "h-1.5 w-1.5 shrink-0 rounded-full",
-                          s.status === "Online" ? "bg-emerald-400" : "bg-red-400"
+                          s.status === "ONLINE" ? "bg-emerald-400" : "bg-red-400"
                         )}
                       />
                     </button>
